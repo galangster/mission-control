@@ -117,7 +117,7 @@ export default function CalendarPage() {
       </motion.div>
 
       {view === "month" ? (
-        <!-- Month View -->
+        {/* Month View */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -182,7 +182,7 @@ export default function CalendarPage() {
           </div>
         </motion.div>
       ) : (
-        <!-- List View -->
+        {/* List View */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -203,11 +203,11 @@ export default function CalendarPage() {
                     <h3 className="font-medium text-[#292524]">{event.title}</h3>
                     <div className="flex items-center gap-3 text-sm text-[#78716C]">
                       <span className="flex items-center gap-1">
-                        <CalendarDays className="w-3 h-3" /
+                        <CalendarDays className="w-3 h-3" />
                         {event.date}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" /
+                        <Clock className="w-3 h-3" />
                         {event.time}
                       </span>
                     </div>

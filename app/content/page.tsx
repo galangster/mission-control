@@ -33,7 +33,7 @@ export default function ContentPage() {
 
     if (newIndex >= 0 && newIndex < stages.length) {
       setContent((prev) =>
-        prev.map((c) =
+        prev.map((c) =>
           c.id === itemId ? { ...c, stage: stages[newIndex].id } : c
         )
       );
@@ -200,7 +200,7 @@ export default function ContentPage() {
               {selectedItem.script && (
                 <div className="bg-[#F5F5F4] rounded-xl p-4">
                   <h3 className="font-semibold text-[#292524] mb-2 flex items-center gap-2">
-                    <FileText className="w-4 h-4" /
+                    <FileText className="w-4 h-4" />
                     Script
                   </h3>
                   <p className="text-[#292524] whitespace-pre-wrap font-mono text-sm">{selectedItem.script}</p>

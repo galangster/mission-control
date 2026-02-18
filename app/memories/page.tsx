@@ -167,11 +167,11 @@ export default function MemoriesPage() {
               {/* Footer */}
               <div className="flex items-center justify-between text-xs text-[#78716C]">
                 <div className="flex items-center gap-1">
-                  <User className="w-3 h-3" /
+                  <User className="w-3 h-3" />
                   <span>{memory.agentId}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" /
+                  <Calendar className="w-3 h-3" />
                   <span>{memory.createdAt}</span>
                 </div>
               </div>
@@ -226,7 +226,7 @@ export default function MemoriesPage() {
                   <span>Created by {selectedMemory.agentId}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" /
+                  <Calendar className="w-4 h-4" />
                   <span>{selectedMemory.createdAt}</span>
                 </div>
               </div>
