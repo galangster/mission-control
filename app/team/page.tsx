@@ -2,56 +2,87 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Edit2, Trash2, Bot, Code, Palette, PenTool, X, Check } from "lucide-react";
+import { Plus, Edit2, Trash2, Bot, Code, Palette, PenTool, X, Check, Search, BookOpen, Sparkles } from "lucide-react";
 
+// Yuki HQ Team - Japanese names with roles and colors
 const initialAgents = [
   {
     id: "1",
     name: "Yuki",
-    role: "Chief Assistant",
+    role: "CEO/Commander",
     avatar: "Y",
     status: "working",
-    currentTask: "Building Mission Control",
-    description: "Main OpenClaw assistant. Handles coordination, research, and general tasks.",
+    currentTask: "Overseeing Yuki HQ operations",
+    description: "Main AI assistant and strategic commander. Coordinates the entire team and makes high-level decisions.",
     color: "#E07A5F",
+    icon: Sparkles,
   },
   {
     id: "2",
-    name: "Code",
-    role: "Developer",
-    avatar: "C",
-    status: "idle",
-    currentTask: null,
-    description: "Specializes in software development, debugging, and code review.",
-    color: "#81B29A",
+    name: "Sakura",
+    role: "Content/Writer",
+    avatar: "S",
+    status: "working",
+    currentTask: "Drafting AI Workflow Tutorial",
+    description: "Creative wordsmith specializing in scripts, blog posts, and marketing copy with cherry blossom flair.",
+    color: "#F4A5AE",
+    icon: PenTool,
   },
   {
     id: "3",
-    name: "Scribe",
-    role: "Content Writer",
-    avatar: "S",
+    name: "Hana",
+    role: "Designer",
+    avatar: "H",
     status: "idle",
     currentTask: null,
-    description: "Creates scripts, blog posts, and marketing copy.",
-    color: "#F4A896",
+    description: "Visual artist handling UI/UX, thumbnails, and brand aesthetics with nature-inspired creativity.",
+    color: "#81B29A",
+    icon: Palette,
   },
   {
     id: "4",
-    name: "Pixel",
-    role: "Designer",
-    avatar: "P",
+    name: "Mika",
+    role: "Developer",
+    avatar: "M",
+    status: "working",
+    currentTask: "Building animation components",
+    description: "Technical architect specializing in software development, debugging, and system architecture.",
+    color: "#6B8DD6",
+    icon: Code,
+  },
+  {
+    id: "5",
+    name: "Rin",
+    role: "Researcher",
+    avatar: "R",
     status: "idle",
     currentTask: null,
-    description: "Handles visual design, thumbnails, and UI/UX.",
-    color: "#A8D5C3",
+    description: "Intelligence gatherer focused on deep research, data analysis, and competitive intelligence.",
+    color: "#E8B86D",
+    icon: BookOpen,
   },
 ];
 
-const roleIcons: Record<string, typeof Bot> = {
-  "Chief Assistant": Bot,
-  "Developer": Code,
-  "Content Writer": PenTool,
-  "Designer": Palette,
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
 };
 
 export default function TeamPage() {
@@ -78,6 +109,7 @@ export default function TeamPage() {
       avatar: newAgent.name[0],
       status: "idle" as const,
       currentTask: null,
+      icon: Bot,
     };
     
     setAgents((prev) => [...prev, agent]);
@@ -94,20 +126,21 @@ export default function TeamPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      {/* Header */}
+      {/* Header - Yuki HQ */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between"
+      >
           <div>
             <h1 className="text-3xl font-bold text-[#292524] mb-2">Team</h1>
-            <p className="text-[#78716C]">Your digital workforce.</p>
+            <p className="text-[#78716C]">Your AI workforce at Yuki HQ.</p>
           </div>
           <button
             onClick={() => setIsCreating(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-xl font-medium hover:bg-[#C45A3F] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-xl font-medium hover:bg-[#C45A3F] transition-colors elastic-button"
           >
             <Plus className="w-4 h-4" />
             Add Agent
@@ -115,24 +148,27 @@ export default function TeamPage() {
         </div>
       </motion.div>
 
-      {/* Team Grid */}
+      {/* Team Grid with Staggered Reveal */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
       >
         {agents.map((agent) => {
-          const RoleIcon = roleIcons[agent.role] || Bot;
+          const Icon = agent.icon || Bot;
           const isEditing = editingId === agent.id;
 
           return (
             <motion.div
               key={agent.id}
+              variants={itemVariants}
               layout
               className="bg-white rounded-2xl p-6 border border-[#E7E5E4] card-hover"
             >
               {isEditing ? (
-                <div className="space-y-4">
+                <div className="space-y-4"
+          >
                   <input
                     type="text"
                     defaultValue={agent.name}
@@ -154,16 +190,17 @@ export default function TeamPage() {
                     rows={2}
                     placeholder="Description"
                   />
-                  <div className="flex gap-2">
+                  <div className="flex gap-2"
+          >
                     <button
                       onClick={() => setEditingId(null)}
-                      className="flex-1 px-3 py-2 bg-[#F5F5F4] rounded-lg text-[#78716C] hover:bg-[#E7E5E4] transition-colors"
+                      className="flex-1 px-3 py-2 bg-[#F5F5F4] rounded-lg text-[#78716C] hover:bg-[#E7E5E4] transition-colors elastic-button"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={() => setEditingId(null)}
-                      className="flex-1 px-3 py-2 bg-[#81B29A] text-white rounded-lg hover:bg-[#6B9A84] transition-colors"
+                      className="flex-1 px-3 py-2 bg-[#81B29A] text-white rounded-lg hover:bg-[#6B9A84] transition-colors elastic-button"
                     >
                       <Check className="w-4 h-4 mx-auto" />
                     </button>
@@ -171,8 +208,10 @@ export default function TeamPage() {
                 </div>
               ) : (
                 <>
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-start justify-between mb-4"
+          >
+                    <div className="flex items-center gap-3"
+          >
                       <div
                         className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold text-white"
                         style={{ backgroundColor: agent.color }}
@@ -181,22 +220,24 @@ export default function TeamPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-[#292524]">{agent.name}</h3>
-                        <div className="flex items-center gap-1 text-sm text-[#78716C]">
-                          <RoleIcon className="w-3 h-3" />
+                        <div className="flex items-center gap-1 text-sm text-[#78716C]"
+          >
+                          <Icon className="w-3 h-3" />
                           <span>{agent.role}</span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex gap-1">
+                    <div className="flex gap-1"
+          >
                       <button
                         onClick={() => setEditingId(agent.id)}
-                        className="p-2 hover:bg-[#F5F5F4] rounded-lg transition-colors"
+                        className="p-2 hover:bg-[#F5F5F4] rounded-lg transition-colors elastic-button"
                       >
                         <Edit2 className="w-4 h-4 text-[#78716C]" />
                       </button>
                       <button
                         onClick={() => deleteAgent(agent.id)}
-                        className="p-2 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 hover:bg-red-50 rounded-lg transition-colors elastic-button"
                       >
                         <Trash2 className="w-4 h-4 text-red-500" />
                       </button>
@@ -205,8 +246,10 @@ export default function TeamPage() {
 
                   <p className="text-sm text-[#78716C] mb-4">{agent.description}</p>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-[#E7E5E4]">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between pt-4 border-t border-[#E7E5E4]"
+          >
+                    <div className="flex items-center gap-2"
+          >
                       <div
                         className={`w-2 h-2 rounded-full ${
                           agent.status === "working"
@@ -218,7 +261,8 @@ export default function TeamPage() {
                     </div>
                     
                     {agent.currentTask && (
-                      <span className="text-xs text-[#78716C] bg-[#F5F5F4] px-2 py-1 rounded-lg truncate max-w-[150px]">
+                      <span className="text-xs text-[#78716C] bg-[#F5F5F4] px-2 py-1 rounded-lg truncate max-w-[150px]"
+                      >
                         {agent.currentTask}
                       </span>
                     )}
@@ -247,17 +291,19 @@ export default function TeamPage() {
               onClick={(e) => e.stopPropagation()}
               className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl"
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-6"
+          >
                 <h2 className="text-xl font-bold text-[#292524]">Add New Agent</h2>
                 <button
                   onClick={() => setIsCreating(false)}
-                  className="p-2 hover:bg-[#F5F5F4] rounded-lg transition-colors"
+                  className="p-2 hover:bg-[#F5F5F4] rounded-lg transition-colors elastic-button"
                 >
                   <X className="w-5 h-5 text-[#78716C]" />
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-4"
+          >
                 <div>
                   <label className="block text-sm font-medium text-[#292524] mb-1">Name</label>
                   <input
@@ -265,7 +311,7 @@ export default function TeamPage() {
                     value={newAgent.name}
                     onChange={(e) => setNewAgent({ ...newAgent, name: e.target.value })}
                     className="w-full px-3 py-2 border border-[#E7E5E4] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F]"
-                    placeholder="e.g., Researcher"
+                    placeholder="e.g., Bot"
                   />
                 </div>
 
@@ -293,8 +339,9 @@ export default function TeamPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-[#292524] mb-2">Color</label>
-                  <div className="flex gap-2">
-                    {["#E07A5F", "#81B29A", "#F4A896", "#A8D5C3", "#78716C", "#292524"].map((color) => (
+                  <div className="flex gap-2"
+          >
+                    {["#E07A5F", "#F4A5AE", "#81B29A", "#6B8DD6", "#E8B86D", "#78716C", "#292524"].map((color) => (
                       <button
                         key={color}
                         onClick={() => setNewAgent({ ...newAgent, color })}
@@ -310,7 +357,7 @@ export default function TeamPage() {
                 <button
                   onClick={createAgent}
                   disabled={!newAgent.name || !newAgent.role}
-                  className="w-full py-3 bg-[#E07A5F] text-white rounded-xl font-medium hover:bg-[#C45A3F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="w-full py-3 bg-[#E07A5F] text-white rounded-xl font-medium hover:bg-[#C45A3F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors elastic-button"
                 >
                   Create Agent
                 </button>

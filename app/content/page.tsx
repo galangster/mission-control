@@ -2,23 +2,54 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, ChevronLeft, ChevronRight, FileText, Image as ImageIcon, Video, CheckCircle } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight, FileText, Image as ImageIcon, Video, CheckCircle, Sparkles } from "lucide-react";
 
 const initialContent = [
-  { id: "1", title: "AI Workflow Tutorial", description: "How I use AI agents daily", stage: "ideas", createdAt: "2026-02-18" },
-  { id: "2", title: "OpenClaw Setup Guide", description: "Complete setup from scratch", script: "In this video, I'll show you how to set up OpenClaw...", stage: "script", createdAt: "2026-02-17" },
-  { id: "3", title: "Mission Control Demo", description: "Dashboard walkthrough", script: "Let me show you my Mission Control setup...", thumbnailUrl: "https://picsum.photos/seed/mission/400/300", stage: "thumbnail", createdAt: "2026-02-16" },
-  { id: "4", title: "Coding Agent Tutorial", description: "Using Codex effectively", script: "Codex is a game-changer for development...", thumbnailUrl: "https://picsum.photos/seed/codex/400/300", stage: "filming", createdAt: "2026-02-15" },
-  { id: "5", title: "My First AI App", description: "Building with Claude", thumbnailUrl: "https://picsum.photos/seed/first/400/300", stage: "published", createdAt: "2026-02-10" },
+  { id: "1", title: "AI Workflow Tutorial", description: "How I use AI agents daily", stage: "ideas", createdAt: "2026-02-18", agent: "Sakura" },
+  { id: "2", title: "Yuki HQ Setup Guide", description: "Complete setup from scratch", script: "In this video, I'll show you how to set up Yuki HQ...", stage: "script", createdAt: "2026-02-17", agent: "Sakura" },
+  { id: "3", title: "Animation Deep Dive", description: "Elastic buttons and hover effects", script: "Let me show you the new animations...", thumbnailUrl: "https://picsum.photos/seed/mission/400/300", stage: "thumbnail", createdAt: "2026-02-16", agent: "Mika" },
+  { id: "4", title: "Design Philosophy", description: "Japanese-inspired aesthetics", script: "The Yuki HQ theme draws from...", thumbnailUrl: "https://picsum.photos/seed/design/400/300", stage: "filming", createdAt: "2026-02-15", agent: "Hana" },
+  { id: "5", title: "My First AI App", description: "Building with Claude", thumbnailUrl: "https://picsum.photos/seed/first/400/300", stage: "published", createdAt: "2026-02-10", agent: "Mika" },
 ];
 
 const stages = [
   { id: "ideas", label: "Ideas", icon: Plus, color: "#78716C" },
   { id: "script", label: "Script", icon: FileText, color: "#E07A5F" },
-  { id: "thumbnail", label: "Thumbnail", icon: ImageIcon, color: "#F4A896" },
+  { id: "thumbnail", label: "Thumbnail", icon: ImageIcon, color: "#F4A5AE" },
   { id: "filming", label: "Filming", icon: Video, color: "#81B29A" },
-  { id: "published", label: "Published", icon: CheckCircle, color: "#A8D5C3" },
+  { id: "published", label: "Published", icon: CheckCircle, color: "#6B8DD6" },
 ];
+
+// Agent colors
+const agentColors: Record<string, string> = {
+  Sakura: "#F4A5AE",
+  Hana: "#81B29A",
+  Mika: "#6B8DD6",
+  Rin: "#E8B86D",
+  Yuki: "#E07A5F",
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  },
+};
 
 export default function ContentPage() {
   const [content, setContent] = useState(initialContent);
@@ -42,18 +73,24 @@ export default function ContentPage() {
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
-      {/* Header */}
+      {/* Header - Yuki HQ */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="mb-8"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between"
+      >
           <div>
-            <h1 className="text-3xl font-bold text-[#292524] mb-2">Content Pipeline</h1>
+            <div className="flex items-center gap-2 mb-2"
+          >
+              <Sparkles className="w-6 h-6 text-[#F4A5AE]" />
+              <h1 className="text-3xl font-bold text-[#292524]">Content Pipeline</h1>
+            </div>
             <p className="text-[#78716C]">Ideas → Scripts → Thumbnails → Filming → Published.</p>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-xl font-medium hover:bg-[#C45A3F] transition-colors">
+          <button className="flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-xl font-medium hover:bg-[#C45A3F] transition-colors elastic-button"
+          >
             <Plus className="w-4 h-4" />
             New Idea
           </button>
@@ -62,8 +99,9 @@ export default function ContentPage() {
 
       {/* Pipeline */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
         className="flex gap-4 overflow-x-auto pb-4"
       >
         {stages.map((stage, index) => {
@@ -71,9 +109,14 @@ export default function ContentPage() {
           const Icon = stage.icon;
 
           return (
-            <div key={stage.id} className="flex-shrink-0 w-72">
+            <motion.div 
+              key={stage.id} 
+              variants={itemVariants}
+              className="flex-shrink-0 w-72"
+            >
               {/* Stage Header */}
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-4"
+          >
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ backgroundColor: `${stage.color}20` }}
@@ -81,7 +124,8 @@ export default function ContentPage() {
                   <Icon className="w-4 h-4" style={{ color: stage.color }} />
                 </div>
                 <span className="font-semibold text-[#292524]">{stage.label}</span>
-                <span className="text-sm text-[#78716C] bg-[#F5F5F4] px-2 py-0.5 rounded-full">
+                <span className="text-sm text-[#78716C] bg-[#F5F5F4] px-2 py-0.5 rounded-full"
+          >
                   {stageContent.length}
                 </span>
                 {index < stages.length - 1 && (
@@ -90,7 +134,8 @@ export default function ContentPage() {
               </div>
 
               {/* Content Cards */}
-              <div className="space-y-3">
+              <div className="space-y-3"
+          >
                 <AnimatePresence mode="popLayout">
                   {stageContent.map((item) => (
                     <motion.div
@@ -104,7 +149,8 @@ export default function ContentPage() {
                     >
                       {/* Thumbnail */}
                       {item.thumbnailUrl && (
-                        <div className="mb-3 rounded-lg overflow-hidden aspect-video bg-[#F5F5F4]">
+                        <div className="mb-3 rounded-lg overflow-hidden aspect-video bg-[#F5F5F4]"
+          >
                           <img
                             src={item.thumbnailUrl}
                             alt={item.title}
@@ -113,20 +159,38 @@ export default function ContentPage() {
                         </div>
                       )}
                       
-                      <h3 className="font-medium text-[#292524] mb-1">{item.title}</h3>
+                      <div className="flex items-start justify-between mb-2"
+          >
+                        <h3 className="font-medium text-[#292524]">{item.title}</h3>
+                      </div>
+                      
                       <p className="text-sm text-[#78716C] mb-3">{item.description}</p>
 
+                      {/* Agent Badge */}
+                      <div className="flex items-center gap-2 mb-3"
+          >
+                        <div 
+                          className="w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-bold text-white"
+                          style={{ backgroundColor: agentColors[item.agent] || "#78716C" }}
+                        >
+                          {item.agent[0]}
+                        </div>
+                        <span className="text-xs text-[#78716C]">{item.agent}</span>
+                      </div>
+
                       {/* Stage Controls */}
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between"
+          >
                         <span className="text-xs text-[#78716C]">{item.createdAt}</span>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1"
+          >
                           {index > 0 && (
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 moveStage(item.id, "prev");
                               }}
-                              className="p-1 rounded-lg hover:bg-[#F5F5F4] transition-colors"
+                              className="p-1 rounded-lg hover:bg-[#F5F5F4] transition-colors elastic-button"
                             >
                               <ChevronLeft className="w-4 h-4 text-[#78716C]" />
                             </button>
@@ -137,7 +201,7 @@ export default function ContentPage() {
                                 e.stopPropagation();
                                 moveStage(item.id, "next");
                               }}
-                              className="p-1 rounded-lg hover:bg-[#F5F5F4] transition-colors"
+                              className="p-1 rounded-lg hover:bg-[#F5F5F4] transition-colors elastic-button"
                             >
                               <ChevronRight className="w-4 h-4 text-[#78716C]" />
                             </button>
@@ -148,7 +212,7 @@ export default function ContentPage() {
                   ))}
                 </AnimatePresence>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </motion.div>
@@ -170,16 +234,31 @@ export default function ContentPage() {
               onClick={(e) => e.stopPropagation()}
               className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-auto shadow-2xl"
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-4"
+          >
                 <div>
-                  <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#F5F5F4] text-[#78716C] uppercase">
-                    {selectedItem.stage}
-                  </span>
-                  <h2 className="text-2xl font-bold text-[#292524] mt-2">{selectedItem.title}</h2>
+                  <div className="flex items-center gap-2 mb-2"
+          >
+                    <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#F5F5F4] text-[#78716C] uppercase"
+                    >
+                      {selectedItem.stage}
+                    </span>
+                    <div className="flex items-center gap-1"
+          >
+                      <div 
+                        className="w-4 h-4 rounded-full flex items-center justify-center text-[7px] font-bold text-white"
+                        style={{ backgroundColor: agentColors[selectedItem.agent] || "#78716C" }}
+                      >
+                        {selectedItem.agent[0]}
+                      </div>
+                      <span className="text-xs text-[#78716C]">{selectedItem.agent}</span>
+                    </div>
+                  </div>
+                  <h2 className="text-2xl font-bold text-[#292524]">{selectedItem.title}</h2>
                 </div>
                 <button
                   onClick={() => setSelectedItem(null)}
-                  className="p-2 hover:bg-[#F5F5F4] rounded-lg transition-colors"
+                  className="p-2 hover:bg-[#F5F5F4] rounded-lg transition-colors elastic-button"
                 >
                   ✕
                 </button>
@@ -188,7 +267,8 @@ export default function ContentPage() {
               <p className="text-[#78716C] mb-6">{selectedItem.description}</p>
 
               {selectedItem.thumbnailUrl && (
-                <div className="mb-6 rounded-xl overflow-hidden">
+                <div className="mb-6 rounded-xl overflow-hidden"
+          >
                   <img
                     src={selectedItem.thumbnailUrl}
                     alt={selectedItem.title}
@@ -198,8 +278,10 @@ export default function ContentPage() {
               )}
 
               {selectedItem.script && (
-                <div className="bg-[#F5F5F4] rounded-xl p-4">
-                  <h3 className="font-semibold text-[#292524] mb-2 flex items-center gap-2">
+                <div className="bg-[#F5F5F4] rounded-xl p-4"
+          >
+                  <h3 className="font-semibold text-[#292524] mb-2 flex items-center gap-2"
+          >
                     <FileText className="w-4 h-4" />
                     Script
                   </h3>

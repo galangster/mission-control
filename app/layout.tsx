@@ -4,8 +4,8 @@ import { ConvexClientProvider } from "./providers";
 import { Navigation } from "./components/Navigation";
 
 export const metadata: Metadata = {
-  title: "Mission Control",
-  description: "Your OpenClaw command center",
+  title: "Yuki HQ",
+  description: "Your AI command center",
 };
 
 export default function RootLayout({

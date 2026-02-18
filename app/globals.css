@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Warm minimal color palette */
+  /* Yuki HQ Color Palette - Japanese-inspired */
   --background: 40 20% 98%;
   --foreground: 24 10% 10%;
   --card: 40 10% 96%;
@@ -28,12 +28,32 @@
   --ring: 14 75% 62%;
   --radius: 0.75rem;
   
-  /* Custom colors */
+  /* Yuki HQ Custom colors */
   --coral: #E07A5F;
   --coral-light: #F4A896;
   --coral-dark: #C45A3F;
-  --sage: #81B29A;
-  --sage-light: #A8D5C3;
+  
+  /* Sakura pink for Sakura (Content/Writer) */
+  --sakura: #F4A5AE;
+  --sakura-light: #F8C4CB;
+  --sakura-dark: #E0808C;
+  
+  /* Moss green for Hana (Designer) */
+  --moss: #81B29A;
+  --moss-light: #A8D5C3;
+  --moss-dark: #6B9A84;
+  
+  /* Indigo for Mika (Developer) */
+  --indigo: #6B8DD6;
+  --indigo-light: #9BB3E8;
+  --indigo-dark: #4A6BB5;
+  
+  /* Amber for Rin (Researcher) */
+  --amber: #E8B86D;
+  --amber-light: #F5D69A;
+  --amber-dark: #C99A4F;
+  
+  /* Warm neutrals */
   --warm-white: #FAFAF9;
   --warm-surface: #F5F5F4;
   --warm-border: #E7E5E4;
@@ -74,7 +94,11 @@ body {
   background: var(--warm-text-secondary);
 }
 
-/* Animation utilities */
+/* ============================================
+   YUKI HQ ANIMATIONS - Performance Conscious
+   ============================================ */
+
+/* -------- Shimmer Loading Animation -------- */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -91,6 +115,7 @@ body {
   animation: shimmer 2s infinite;
 }
 
+/* -------- Pulse Soft -------- */
 @keyframes pulse-soft {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
@@ -100,17 +125,112 @@ body {
   animation: pulse-soft 2s ease-in-out infinite;
 }
 
-/* Card hover effect */
+/* -------- Elastic Button Press (CSS-only) -------- */
+.elastic-button {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s ease;
+}
+
+.elastic-button:hover {
+  transform: translateY(-1px);
+}
+
+.elastic-button:active {
+  transform: scale(0.96);
+}
+
+/* Playful variant - more bounce */
+.elastic-button-playful {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s ease;
+}
+
+.elastic-button-playful:active {
+  transform: scale(0.92);
+}
+
+/* -------- Hover Lift with Shadow -------- */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, box-shadow;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Card hover effect (legacy compatibility) */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, box-shadow;
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+  transform: translateY(-4px);
+  box-shadow: 
+    0 12px 24px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04);
 }
 
-/* Status indicators */
+/* -------- Staggered List Reveal -------- */
+@keyframes stagger-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-item {
+  opacity: 0;
+  animation: stagger-reveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Pre-defined stagger delays for up to 20 items */
+.stagger-item:nth-child(1) { animation-delay: 0ms; }
+.stagger-item:nth-child(2) { animation-delay: 50ms; }
+.stagger-item:nth-child(3) { animation-delay: 100ms; }
+.stagger-item:nth-child(4) { animation-delay: 150ms; }
+.stagger-item:nth-child(5) { animation-delay: 200ms; }
+.stagger-item:nth-child(6) { animation-delay: 250ms; }
+.stagger-item:nth-child(7) { animation-delay: 300ms; }
+.stagger-item:nth-child(8) { animation-delay: 350ms; }
+.stagger-item:nth-child(9) { animation-delay: 400ms; }
+.stagger-item:nth-child(10) { animation-delay: 450ms; }
+.stagger-item:nth-child(11) { animation-delay: 500ms; }
+.stagger-item:nth-child(12) { animation-delay: 550ms; }
+.stagger-item:nth-child(13) { animation-delay: 600ms; }
+.stagger-item:nth-child(14) { animation-delay: 650ms; }
+.stagger-item:nth-child(15) { animation-delay: 700ms; }
+.stagger-item:nth-child(16) { animation-delay: 750ms; }
+.stagger-item:nth-child(17) { animation-delay: 800ms; }
+.stagger-item:nth-child(18) { animation-delay: 850ms; }
+.stagger-item:nth-child(19) { animation-delay: 900ms; }
+.stagger-item:nth-child(20) { animation-delay: 950ms; }
+
+/* -------- Shimmer Skeleton Loading -------- */
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--warm-surface) 0%,
+    var(--warm-white) 50%,
+    var(--warm-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* -------- Status Indicators -------- */
 .status-dot {
   width: 8px;
   height: 8px;
@@ -123,18 +243,72 @@ body {
 }
 
 .status-working {
-  background-color: var(--sage);
-  box-shadow: 0 0 0 2px var(--sage-light);
+  background-color: var(--moss);
+  box-shadow: 0 0 0 2px var(--moss-light);
   animation: pulse-soft 2s ease-in-out infinite;
 }
 
-/* Typography */
+/* -------- Typography -------- */
 .text-balance {
   text-wrap: balance;
 }
 
-/* Focus states */
+/* -------- Focus States -------- */
 .focus-ring:focus-visible {
   outline: 2px solid var(--coral);
   outline-offset: 2px;
 }
+
+/* -------- Reduced Motion Support -------- */
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer,
+  .animate-pulse-soft,
+  .skeleton-shimmer {
+    animation: none;
+  }
+  
+  .stagger-item {
+    opacity: 1;
+    animation: none;
+  }
+  
+  .hover-lift,
+  .card-hover {
+    transition: none;
+  }
+  
+  .hover-lift:hover,
+  .card-hover:hover {
+    transform: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .elastic-button,
+  .elastic-button-playful {
+    transition: none;
+  }
+  
+  .elastic-button:active,
+  .elastic-button-playful:active {
+    transform: none;
+  }
+}
+
+/* -------- Agent Color Utilities -------- */
+.agent-yuki { color: var(--coral); background-color: var(--coral); }
+.agent-sakura { color: var(--sakura); background-color: var(--sakura); }
+.agent-hana { color: var(--moss); background-color: var(--moss); }
+.agent-mika { color: var(--indigo); background-color: var(--indigo); }
+.agent-rin { color: var(--amber); background-color: var(--amber); }
+
+.agent-yuki-bg { background-color: var(--coral); }
+.agent-sakura-bg { background-color: var(--sakura); }
+.agent-hana-bg { background-color: var(--moss); }
+.agent-mika-bg { background-color: var(--indigo); }
+.agent-rin-bg { background-color: var(--amber); }
+
+.agent-yuki-light { background-color: rgba(224, 122, 95, 0.15); }
+.agent-sakura-light { background-color: rgba(244, 165, 174, 0.15); }
+.agent-hana-light { background-color: rgba(129, 178, 154, 0.15); }
+.agent-mika-light { background-color: rgba(107, 141, 214, 0.15); }
+.agent-rin-light { background-color: rgba(232, 184, 109, 0.15); }
