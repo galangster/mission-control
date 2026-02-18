@@ -132,7 +132,6 @@ export default function TeamPage() {
               className="bg-white rounded-2xl p-6 border border-[#E7E5E4] card-hover"
             >
               {isEditing ? (
-                {/* Edit Mode */}
                 <div className="space-y-4">
                   <input
                     type="text"
@@ -171,7 +170,6 @@ export default function TeamPage() {
                   </div>
                 </div>
               ) : (
-                {/* View Mode */}
                 <>
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">

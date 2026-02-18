@@ -117,7 +117,6 @@ export default function CalendarPage() {
       </motion.div>
 
       {view === "month" ? (
-        {/* Month View */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -182,7 +181,6 @@ export default function CalendarPage() {
           </div>
         </motion.div>
       ) : (
-        {/* List View */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
